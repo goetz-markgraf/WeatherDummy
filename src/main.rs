@@ -1,6 +1,7 @@
 #[macro_use] extern crate rocket;
 
 use rocket::serde::json::Json;
+use rocket_cors::CorsOptions;
 use serde::Serialize;
 use rand::Rng;
 
@@ -27,5 +28,11 @@ fn weather(location: String) -> Json<WeatherForecast> {
 
 #[launch]
 fn rocket() -> _ {
-    rocket::build().mount("/", routes![weather])
+    let cors = CorsOptions::default()
+        .to_cors()
+        .expect("error creating CORS fairing");
+
+    rocket::build()
+        .attach(cors)
+        .mount("/", routes![weather])
 }
