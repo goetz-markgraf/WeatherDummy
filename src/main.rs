@@ -1,9 +1,10 @@
-#[macro_use] extern crate rocket;
+#[macro_use]
+extern crate rocket;
 
+use rand::Rng;
 use rocket::serde::json::Json;
 use rocket_cors::CorsOptions;
 use serde::Serialize;
-use rand::Rng;
 
 #[derive(Serialize)]
 struct WeatherForecast {
@@ -32,7 +33,5 @@ fn rocket() -> _ {
         .to_cors()
         .expect("error creating CORS fairing");
 
-    rocket::build()
-        .attach(cors)
-        .mount("/", routes![weather])
+    rocket::build().attach(cors).mount("/", routes![weather])
 }
